@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drag and Drop Example</title>
+<style>
+  .container {
+  max-width: 960px;
+  margin: 25px;
+}
+
+
+body {
+  background-color: #ffffff;
+  font-family: sans-serif;
+  Justify-content: center;
+  align-items:center;
+  height: 100vh;
+  margin-top: 0px;
+}
+
+
+h1, h3, p {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #000000;
+}
+
+
+main {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 35px;
+}
+
+
+.draggable-list {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+.draggable-list li {
+    margin-bottom: 10px;
+}
+
+
+li {
+  list-style: none;
+  padding: 10px;
+  margin: 5px;
+  background-color: #e7a6f1;
+  color: #263238;
+  cursor: grab;
+}
+
+
+.over {
+  background-color: #e3b861;
+}
+
+
+.image-container {
+    width: 200px;
+    height: 200px;
+    display: flex;               /* Add this to enable flexbox */
+    justify-content: center;     /* Centers content horizontally */
+    align-items: center; 
+}
+.text-container {
+    width: 200px;
+    height: 200px;
+   
+ 
+}
+
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px; /* Adjust as needed */
+  text-align: center;
+}
+
+.button-container button {
+  cursor: pointer;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  background-color: #d1c821;
+  color: #fff;
+}
+
+.button-container button:hover {
+  background-color: #b6cfda;
+}
+
+#navigateButton{
+  cursor: pointer;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 50px;
+  border: none;
+  background-color: #FFC519;
+  color: #fff;
+  animation: bounce 2s infinite;
+}
+#playagain{
+  background-color: #e24b9a;
+}
+
+table {
+  max-width:400px;
+  margin: auto;
+  margin-bottom: 10px;
+  /* border: 1px solid #b0bec5; */
+}
+
+
+th, td {
+  padding: 0;
+}
+
+
+td {
+  border: 1px solid #e2bc9e;
+}
+
+
+tr:nth-child(even) {
+  background-color: #e06624;
+}
+
+
+button {
+  margin: auto;
+  cursor: pointer;
+  display: block;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 50px;
+  border: none;
+  background-color: #f9dc21;
+  color: #fff;
+}
+#button1 {
+  cursor: pointer;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 50px;
+  border: none;
+  background-color: #81c341;
+  color: #fff;
+  animation: bounce 2s infinite; /* Apply the bounce animation */
+}
+
+/* Style for button hover state */
+#button1:hover {
+  animation-play-state: paused; /* Pause the animation on hover */
+  background-color: #cf5e21;
+}
+
+
+
+button:hover {
+  background-color: #b6cfda;
+}
+
+
+#endMessage {
+  display: none;
+}
+#e1,#e2,#e3,#e4,#e5,#e6,#e7,#s1,#s2,#s3,#s4,#s5,#s6,#s7{
+    border-radius: 100px;
+    
+}
+.rounded-image {
+  border-radius: 100px; /* Applies a border radius of 100px to the image */
+}
+#e1:hover, #e2:hover, #e3:hover, #e4:hover, #e5:hover, #e6:hover, #e7:hover, #s1:hover, #s2:hover, #s3:hover, #s4:hover, #s5:hover, #s6:hover, #s7:hover {
+  animation: bounce 2s infinite;
+  background-color: #ffcc80; /* Add your desired hover color here */
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+/* CSS for modal overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 1000; /* Ensure it's above other content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* CSS for modal video container */
+.modal {
+  
+  position: relative;
+  width: 80%; /* Adjust the width as needed */
+  height: 80%;
+  max-height: 600px;
+  max-width: 800px; /* Maximum width of the modal */
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border: 1px solid #ccc; /* Adjust border style */
+
+}
+
+/* Style for iframe within modal */
+.modal iframe {
+  width: 100%;
+  height: auto; /* Set the height of the video player */
+  border: none; /* Remove iframe border */
+}
+.modal button {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Hover effect for button */
+.modal button:hover {
+  background-color: #0056b3;
+}
+@media (max-width: 768px) {
+  .modal {
+    width: 90%; /* Adjust width for smaller screens */
+    padding: 10px; /* Reduce padding for smaller screens */
+  }
+}
+
+#my-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
+#e1{
+  background-color: #f8991c;
+}
+#e2{
+  background-color: #ffc519;
+}#e3{
+  background-color: #e24b9a;
+}#e4{
+  background-color: #4dc5d6;
+}#e5{
+  background-color: #81c341;
+}#e6{
+  background-color: #f8991c;
+}#e7{
+  background-color: #ffc519;
+}
+#s1{background-color: #ffc519;}
+#s2{background-color: #f8991c;}
+#s3{background-color: #4dc5d6;}
+#s4{background-color: #e24b9a;}
+#s5{background-color: #81c341;}
+#s6{background-color: #ffc519;}
+#s7{background-color: #f8991c;}
+
+
+
+
+</style>
+</head>
+
+
+<body>
+  <audio id="backgroundAudio" autoplay>
+    <source src="https://dl.dropboxusercontent.com/scl/fi/ljopln2ziu0ckw1ypjlm7/Slider-Final.mp3?rlkey=gudzv3e52mw9hdbxp5bleancq&st=agpds3li&dl=0" type="audio/mp3">
+  </audio>
+  
+  <canvas id="my-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;"></canvas>
+    <h1 id="gameTitle">የ ደ ቤተሰብ </h1>
+    <p id="gameInstructions">ስእሎቹን ወደ ቤተሰባአቸው አስገቧቸው </p>
+ 
+    <main class="container">
+      <div class="image-container">
+        <ul class="draggable-list">
+          <li id="e1" draggable="true"><img class="rounded-image" src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/c95f8093829b6ba91efddd40e9e45332.png"  height="150px"  width="150px"   border-radius="100px" alt="ደ"></li>
+          <li id="e2" draggable="true"><img class="rounded-image" src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/db4b593fe5b011c69251cb74c0a4b45d.png"  height="150px"  width="150px" alt="ደ"></li>
+          <li id="e3" draggable="true"><img class="rounded-image"src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/0812f81ff8c5d27e70c89d05bec4c36e.png"  height="150px"  width="150px" alt="ደ"></li>
+          <li id="e4" draggable="true"><img class="rounded-image"src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/6ab0467e61ad46ec990125e57fbbd901.png"  height="150px"  width="150px" alt="ደ"></li>
+          <li id="e5" draggable="true"><img class="rounded-image"src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/bdf174b2471beeb7c8a1cb79372380b8.png"  height="150px"  width="150px" alt="ደ"></li>
+          <li id="e6" draggable="true"><img class="rounded-image"src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/ee40dd7b99bc129d1378ed552d8a6ddb.png"  height="150px"  width="150px" alt="ደ"></li>
+          <li id="e7" draggable="true"><img class="rounded-image"src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/2cb273bb342cf74786317345a783e313.png"  height="150px"  width="150px" alt="ደ"></li>
+        </ul>
+      </div>
+      <div class="text-container">
+        <ul class="draggable-list">
+          <li id="s2" draggable="true"><img class="rounded-image"src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/95ca1cf6b660d573d87f24a2a2b2eb90.png" height="150px"  width="150px"></li>
+          <li id="s5" draggable="true"><img class="rounded-image"src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/42551bb2a98a2877b861aad5b74ff949.png" height="150px"  width="150px"></li>
+          <li id="s1" draggable="true"><img class="rounded-image"src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/96d579091ba54c3f0b11b96b29106e13.png" height="150px"  width="150px"> </li>
+          <li id="s3" draggable="true"><img class="rounded-image"src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/7834d3d70e772041f809ba2804703dea.png" height="150px"  width="150px"></li>
+          <li id="s4" draggable="true"><img class="rounded-image"src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/f104fcee5d94a277cdeae537e401525a.png" height="150px"  width="150px"></li>
+          <li id="s6" draggable="true"><img class="rounded-image"src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/a9197895908f1d244703ff861d56ef78.png" height="150px"  width="150px"></li>
+          <li id="s7" draggable="true"><img class="rounded-image"src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/8e45ccb964d7b706d9398053181cbd3a.png" height="150px"  width="150px"></li>          
+        </ul>
+      </div>
+    </main>
+ 
+    <div id="endMessage">
+      
+      <h3>ጎበዞች!</h3>
+ 
+      <table>
+        <tr>
+          <td><img src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/37a97890b9bc6ccfb96b5c2c3710192d.png"  height="100px"  width="100px" ></td>
+          <td><img src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/96d579091ba54c3f0b11b96b29106e13.png" height="100px"  width="100px"></td>
+        </tr>
+        <tr>
+          <td><img src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/0ab4f02c1ef6bb9a5959e3809e2ef589.png"  height="100px"  width="100px" ></td>
+          <td><img src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/95ca1cf6b660d573d87f24a2a2b2eb90.png" height="100px"  width="100px"></td>
+        </tr>
+        <tr>
+          <td><img src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/be7cda82d4293c9240aeef15a690d498.png"  height="100px"  width="100px" ></td>
+          <td><img src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/7834d3d70e772041f809ba2804703dea.png" height="100px"  width="100px"></td>
+        </tr>
+        <tr>
+          <td><img src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/9dcb442d2fb1ac1d8542b6ab6482d319.png"  height="100px"  width="100px" ></td>
+          <td><img src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/f104fcee5d94a277cdeae537e401525a.png" height="100px"  width="100px"></td>
+        </tr>
+        <tr>
+          <td><img src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/9ce4e4f92e3b8725a595ab4e0e681227.png"  height="100px"  width="100px" ></td>
+          <td><img src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/42551bb2a98a2877b861aad5b74ff949.png" height="100px"  width="100px"></td>
+        </tr>
+        <tr>
+          <td><img src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/ae0f4294199c6cdb816754ea29362c21.png"  height="100px"  width="100px" ></td>
+          <td><img src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/a9197895908f1d244703ff861d56ef78.png" height="100px"  width="100px"></td>
+        </tr>
+        <tr>
+          <td><img src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/3c67a4606ad6cec0e1feafec6c2346b1.png"  height="100px"  width="100px" ></td>
+          <td><img src="https://lwfiles.mycourse.app/6493e7b37caa3d699c652ae7-public/8e45ccb964d7b706d9398053181cbd3a.png" height="100px"  width="100px"></td>
+        </tr>
+      </table>
+      <div class="button-container" id="videoContainer">
+        <button onclick="playAgain() " id="playagain">ደግመው ይጫወቱ</button>
+        <button onclick="navigateToAnotherPage()" id="button1">ወደ ቀጣይ</button>
+      </div>
+    
+    </div> 
+    <script>
+     !function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t():"function"==typeof define&&define.amd?define(t):(e=e||self).ConfettiGenerator=t()}(this,function(){"use strict";return function(e){var a={target:"confetti-holder",max:80,size:1,animate:!0,respawn:!0,props:["circle","square","triangle","line"],colors:[[165,104,246],[230,61,135],[0,199,228],[253,214,126]],clock:25,interval:null,rotate:!1,start_from_edge:!1,width:window.innerWidth,height:window.innerHeight};if(e&&(e.target&&(a.target=e.target),e.max&&(a.max=e.max),e.size&&(a.size=e.size),null!=e.animate&&(a.animate=e.animate),null!=e.respawn&&(a.respawn=e.respawn),e.props&&(a.props=e.props),e.colors&&(a.colors=e.colors),e.clock&&(a.clock=e.clock),null!=e.start_from_edge&&(a.start_from_edge=e.start_from_edge),e.width&&(a.width=e.width),e.height&&(a.height=e.height),null!=e.rotate&&(a.rotate=e.rotate)),"object"!=typeof a.target&&"string"!=typeof a.target)throw new TypeError("The target parameter should be a node or string");if("object"==typeof a.target&&(null===a.target||!a.target instanceof HTMLCanvasElement)||"string"==typeof a.target&&(null===document.getElementById(a.target)||!document.getElementById(a.target)instanceof HTMLCanvasElement))throw new ReferenceError("The target element does not exist or is not a canvas element");var t="object"==typeof a.target?a.target:document.getElementById(a.target),o=t.getContext("2d"),r=[];function n(e,t){e=e||1;var r=Math.random()*e;return t?Math.floor(r):r}var i=a.props.reduce(function(e,t){return e+(t.weight||1)},0);function s(){var e=a.props[function(){for(var e=Math.random()*i,t=0;t<a.props.length;++t){var r=a.props[t].weight||1;if(e<r)return t;e-=r}}()];return{prop:e.type?e.type:e,x:n(a.width),y:a.start_from_edge?a.clock<0?parseFloat(a.height)+10:-10:n(a.height),src:e.src,radius:n(4)+1,size:e.size,rotate:a.rotate,line:Math.floor(n(65)-30),angles:[n(10,!0)+2,n(10,!0)+2,n(10,!0)+2,n(10,!0)+2],color:a.colors[n(a.colors.length,!0)],rotation:n(360,!0)*Math.PI/180,speed:n(a.clock/7)+a.clock/30}}function l(e){if(e)switch(o.fillStyle=o.strokeStyle="rgba("+e.color+", "+(3<e.radius?.8:.4)+")",o.beginPath(),e.prop){case"circle":o.moveTo(e.x,e.y),o.arc(e.x,e.y,e.radius*a.size,0,2*Math.PI,!0),o.fill();break;case"triangle":o.moveTo(e.x,e.y),o.lineTo(e.x+e.angles[0]*a.size,e.y+e.angles[1]*a.size),o.lineTo(e.x+e.angles[2]*a.size,e.y+e.angles[3]*a.size),o.closePath(),o.fill();break;case"line":o.moveTo(e.x,e.y),o.lineTo(e.x+e.line*a.size,e.y+5*e.radius),o.lineWidth=2*a.size,o.stroke();break;case"square":o.save(),o.translate(e.x+15,e.y+5),o.rotate(e.rotation),o.fillRect(-15*a.size,-5*a.size,15*a.size,5*a.size),o.restore();break;case"svg":o.save();var t=new window.Image;t.src=e.src;var r=e.size||15;o.translate(e.x+r/2,e.y+r/2),e.rotate&&o.rotate(e.rotation),o.drawImage(t,-r/2*a.size,-r/2*a.size,r*a.size,r*a.size),o.restore()}}function c(){a.animate=!1,clearInterval(a.interval),requestAnimationFrame(function(){o.clearRect(0,0,t.width,t.height);var e=t.width;t.width=1,t.width=e})}return{render:function(){t.width=a.width,t.height=a.height,r=[];for(var e=0;e<a.max;e++)r.push(s());return requestAnimationFrame(function e(){for(var t in o.clearRect(0,0,a.width,a.height),r)l(r[t]);!function(){for(var e=0;e<a.max;e++){var t=r[e];t&&(a.animate&&(t.y+=t.speed),t.rotate&&(t.rotation+=t.speed/35),(0<=t.speed&&a.height<t.y||t.speed<0&&t.y<0)&&(a.respawn?(r[e]=t,r[e].x=n(a.width,!0),r[e].y=t.speed<0?parseFloat(a.height):-10):r[e]=void 0))}r.every(function(e){return void 0===e})&&c()}(),a.animate&&requestAnimationFrame(e)})},clear:c}}}); 
+    </script>
+     <script src="https://cdn.jsdelivr.net/gh/mathusummut/confetti.js/confetti.min.js"></script>
+<script>
+
+    const draggableListItems = document.querySelectorAll('.draggable-list li');
+    const endMessage = document.getElementById('endMessage');
+    const gameTitle = document.getElementById('gameTitle');
+    const gameInstructions = document.getElementById('gameInstructions');
+
+
+// current phrase being dragged
+let selectedId;
+
+
+// target phrase
+let dropTargetId;
+
+
+// counter for correct phrases
+let matchingCounter = 0;
+
+
+addEventListeners();
+
+
+function dragStart() {
+  selectedId = this.id;
+}
+
+
+function dragEnter() {
+  this.classList.add('over');
+}
+
+
+function dragLeave() {
+  this.classList.remove('over');
+}
+
+
+function dragOver(ev) {
+  ev.preventDefault();
+}
+
+
+function dragDrop() {
+        dropTargetId = this.id;
+
+        if (checkForMatch(selectedId, dropTargetId)) {
+            document.getElementById(selectedId).style.display = 'none';
+            document.getElementById(dropTargetId).style.display = 'none';
+            matchingCounter++;
+
+            console.log('selectedId:', selectedId);
+            console.log('dropTargetId:', dropTargetId);
+            console.log('matchingCounter:', matchingCounter);
+
+            // play correct match sound
+            playCorrectSound();
+
+            if (matchingCounter === 7) {
+                playCelebrationSound();
+                endMessage.style.display = 'block';
+
+                // Remove <h1> and <p> elements
+                gameTitle.style.display = 'none';
+                gameInstructions.style.display = 'none';
+
+                // Add confetti effect
+                const confettiSettings = { target: 'my-canvas' };
+                const confetti = new ConfettiGenerator(confettiSettings);
+                confetti.render();
+                document.getElementById('button1').addEventListener('click', function() {
+                    confetti.clear();
+                });
+            }
+        } else {
+            // Vibrate the device
+            if (navigator.vibrate) {
+                navigator.vibrate(1000); // Vibrate for 1000ms
+            }
+
+            // Change background color
+            this.style.backgroundColor = '#ff0000'; // Change to a red color
+            this.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)'; // Add shadow effect
+
+            // Play an alert sound
+            playAlertSound();
+
+            // Reset color after a delay
+            setTimeout(() => {
+                this.style.backgroundColor = '#dd7821'; // Reset to original color
+            }, 1000);
+        }
+
+        this.classList.remove('over');
+    }
+
+function checkForMatch(selected, dropTarget) {
+  switch (selected) {
+    case 'e1':
+      return dropTarget === 's1';
+    case 'e2':
+      return dropTarget === 's2';
+    case 'e3':
+      return dropTarget === 's3';
+    case 'e4':
+      return dropTarget === 's4';
+    case 'e5':
+      return dropTarget === 's5';
+    case 'e6':
+      return dropTarget === 's6';
+    case 'e7':
+      return dropTarget === 's7';
+    default:
+      return false;
+  }
+}
+
+function playAlertSound() {
+  const audio = new Audio('https://rpg.hamsterrepublic.com/wiki-images/d/d7/Oddbounce.ogg');
+  audio.play();
+}
+function playCelebrationSound() {
+  const celebrationAudio = new Audio('http://commondatastorage.googleapis.com/codeskulptor-assets/week7-brrring.m4a');
+  celebrationAudio.play();
+}
+function playCorrectSound() {
+  const correctAudio = new Audio('http://codeskulptor-demos.commondatastorage.googleapis.com/descent/gotitem.mp3');
+  correctAudio.play();
+}
+
+
+function navigateToAnotherPage() {
+            // Specify the learning activity URL
+            var newUrl = "https://www.tibebgirls.com/path-player?courseid=tll-courses&unit=664c4e0470b6999a520c5934Unit";
+
+            window.location.href = newUrl;
+}
+function playAgain() {
+    matchingCounter = 0;
+    endMessage.style.display = 'none';
+    draggableListItems.forEach(item => {
+      document.getElementById(item.id).style.display = 'block';
+    });
+    // Hide the game title and instructions
+    document.getElementById('gameTitle').style.display = 'none';
+    document.getElementById('gameInstructions').style.display = 'none';
+
+    // Show the "Navigate" button
+    document.getElementById('navigateButton').style.display = 'block';
+  }
+  
+
+// Function to close the modal
+// Add event listener to close the modal when clicking outside the video
+overlay.addEventListener('click', function(event) {
+  if (event.target === overlay) {
+    overlay.remove(); // Remove the overlay to close the modal
+  }
+});
+
+
+
+function addEventListeners() {
+  draggableListItems.forEach(item => {
+    item.addEventListener('dragstart', dragStart);
+    item.addEventListener('dragenter', dragEnter);
+    item.addEventListener('drop', dragDrop);
+    item.addEventListener('dragover', dragOver);
+    item.addEventListener('dragleave', dragLeave);
+  });
+}
+</script>
+<canvas id="my-canvas"></canvas>
+</body>
+</html>
